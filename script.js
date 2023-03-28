@@ -31,6 +31,7 @@ const quizList = [
 ];
 
 //Q: let Vs const
+//Q: Which is more effective/ faster  to use init() Or to put all functions in doc.ready?
 let totalScore = 0;
 const getScore = 10; // easy to update later
 let timeLeft = 15;
@@ -48,7 +49,6 @@ const displayQuizNum = () => {
 };
 
 // Check if user selected answer is correct. If users select the correct answer, they can get 10 points
-// Q: Do I need to use preventDefault()?
 
 const checkCorrectAnswer = () => {
   $("#answers").on("click", ".btn", function () {
@@ -109,6 +109,7 @@ const showScore = () => {
 };
 
 //Set countdown timer and set the countdown time to 15 seconds
+//Q : When moving on to the next question, the timer starts at 0 instead of 15 seconds.
 const setTimer = () => {
   let countdown = () => {
     $("#timer").html(`Timer: ${timeLeft} sec`);
@@ -129,13 +130,14 @@ const setTimer = () => {
   if (currentQuizNum > quizList.length) {
     if (timeLeft <= 0) {
       clearInterval(counter);
-      $("#timer").html(`Timer : 0 sec`); //Timer on the screen is -3 not 0 beacasue of time lag. By setting the number to 0, the user is set to think that the screen has stopped when reaching 0 seconds.
+      $("#timer").html(`Timer : 0 sec`); //Q: Timer on the screen is -3 not 0 beacasue of time lag. By setting the number to 0, the user is set to think that the screen has stopped when reaching 0 seconds.
       disabledBtn();
       showResult();
     }
   }
 };
 
+//Q: The timer should stop when pressing the pause button, but it keeps running
 let gamePaused = () => {
   gamePaused = false;
   let pausedTimeLeft = 0;
