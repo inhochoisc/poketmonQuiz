@@ -25,7 +25,7 @@
   <div class="wrapper">
 
     <section class="header-sub">
-      <div class="title-sub"> </div><img src="assets/images/title_sub.png" alt="Poketmon" width=" 300px">
+      <div class="title-sub"> </div><img src="assets/images/title_sub.png" alt="Poketmon" id="title-sub" width=" 300px">
     </section>
 
     <section class="flex-container">
@@ -33,12 +33,13 @@
       <div class="box" id="score"></div>
       <div class="box" id="timer"></div>
       <div class="box">
-        <button id="pauseBtn" type="button" class="btn btn-outline-light">||</button>
+        <button id="pauseBtn" type="button" class="btn btn-outline-light btn-sm" style="font-size: 10px;">||</button>
       </div>
+
       <div id='modal-window' style="display: none;">
         <div id="modal-contents">
           <p>Game paused</p>
-          <button id="continueBtn" type="button" class="btn btn-outline-success">Play Again</button>
+          <button id="continueBtn" type="button" class="btn btn-success">Play Again</button>
         </div>
       </div>
 
@@ -54,20 +55,22 @@
         </div>
       </div>
 
-      <button id="nextBtn" type="button" class="btn">>next</button>
+      <div class="box1">
+        <button id="nextBtn" type="button" class="btn">>next</button>
+      </div>
     </section>
 
     <section class="wrapper show-result">
-      <hr id="hr-result">
-      <h6 id="finalMsg"></h6>
+
+      <h6 id="finalMsg" style="line-height: 1.6;"></h6>
       <h4 id="finalScore"></h4>
-      <button type="button" class="btn" id="resumeBtn" style="background-color: #2ec4b6;">Try Again</button>
+      <button type="button" class="btn" id="resumeBtn">Try Again</button>
     </section>
 
-    <section class="footer">
-      <footer id="footerInfo"></footer>
-    </section>
+    <footer id="footerInfo"></footer>
+
   </div>
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <script src="script.js"></script>

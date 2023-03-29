@@ -5,28 +5,35 @@ const quizList = [
     characterID: 1,
     thumbnailUrl: "assets/images/pikachu.png",
     characterName: "Pikachu",
-    answers: ["Purin", "냥이", "Pikachu", "코코"],
+    answers: ["Purin", "Butterfree", "Pikachu", "Eevee"],
   },
   {
     quizNumber: 2,
     characterID: 2,
     thumbnailUrl: "assets/images/bulbasaur.png",
     characterName: "Bulbasaur",
-    answers: ["피카", "Bulbasaur", "엘사", "코코"],
+    answers: ["Mewtwo", "Bulbasaur", "Psyduck", "Piplup"],
   },
   {
     quizNumber: 3,
     characterID: 3,
     thumbnailUrl: "assets/images/chikorita.png",
     characterName: "Chikorita",
-    answers: ["Chikorita", "Bulbasaur", "엘사", "코코"],
+    answers: ["Chikorita", "Bulbasaur", "Eevee", "Mewtwo"],
   },
   {
     quizNumber: 4,
     characterID: 4,
     thumbnailUrl: "assets/images/dragonite.png",
     characterName: "Dragonite",
-    answers: ["Chikirita", "Bulbasaur", "Dragonite", "코코"],
+    answers: ["Chikirita", "Bulbasaur", "Dragonite", "Eevee"],
+  },
+  {
+    quizNumber: 5,
+    characterID: 5,
+    thumbnailUrl: "assets/images/charmander.png",
+    characterName: "Charmander",
+    answers: ["Rowlet", "Charmander", "Dragonite", "Piplup"],
   },
 ];
 
@@ -51,7 +58,7 @@ const displayQuizNum = () => {
 };
 
 const displayTimer = () => {
-  $("#timer").html(`Timer: ${timeLeft} sec`);
+  $("#timer").html(`Timer: ${timeLeft}`);
   timeLeft--;
 };
 
@@ -126,7 +133,7 @@ const setTimer = () => {
     };
 
     timerForLastQuestion = () => {
-      $("#timer").html(`Timer: 0 sec`); //to solve the time lag between browser and timer, fix the last time as 'o sec'
+      $("#timer").html(`Timer: 0`); //to solve the time lag between browser and timer, fix the last time as 'o sec'
       $("#pauseBtn").attr("disabled", true);
       showResult();
     };
@@ -257,6 +264,10 @@ $(() => {
   init();
 }); //---------End of document.ready
 
+//header
+$("#title-sub").on("click", () => {
+  window.location.href = "index.html";
+});
 //footer
 $("#footerInfo").html(
   `<a href= https://junocollege.com/ target = "_blank">Created @ Juno College</a>`
