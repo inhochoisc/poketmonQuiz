@@ -31,13 +31,15 @@ const quizList = [
 ];
 
 //Q: let Vs const
-//Q: Which is more effective/ faster  to use init() Or to put all functions in doc.ready?
 let totalScore = 0;
 const getScore = 10; // easy to update later
 let timeLeft = 15;
 let counter;
 let currentQuizNum = 0;
 let finalScore = 0;
+
+let stopTimer;
+let timerForLastQuestion;
 
 //Render current quiz number a user is on
 const displayQuizNum = () => {
@@ -46,6 +48,11 @@ const displayQuizNum = () => {
       .html(`${currentQuizNum}/${quizList.length}`)
       .css("letter-spacing", "5px");
   }
+};
+
+const displayTimer = () => {
+  $("#timer").html(`Timer: ${timeLeft} sec`);
+  timeLeft--;
 };
 
 // Check if user selected answer is correct. If users select the correct answer, they can get 10 points
@@ -87,7 +94,7 @@ const checkCorrectAnswer = () => {
   });
 };
 
-// Once users select an answer, the other buttons are disabled
+// Once users select an answer, buttons are disabled
 const disabledBtn = () => {
   for (let i = 0; i < 4; i++) {
     const answerBtn = $(`#answer${i}`);
@@ -95,7 +102,7 @@ const disabledBtn = () => {
   }
 };
 
-//Reset button on new issue page. Clickable and gray
+//Reset answer buttons on the newly loaded page which are clickable and gray
 const enabledBtn = () => {
   for (let i = 0; i < 4; i++) {
     const answerBtn = $(`#answer${i}`);
@@ -108,94 +115,57 @@ const showScore = () => {
   $("#score").html(`Score: ${totalScore}`);
 };
 
-// Set countdown timer and set the countdown time to 15 seconds
-// const setTimer = () => {
-//   let countdown = () => {
-//     $("#timer").html(`Timer: ${timeLeft} sec`);
-//     timeLeft--;
-
-//     if (timeLeft < 0) {
-//       clearInterval(counter);
-//       disabledBtn();
-//       if (showQuestion()) {
-//         timeLeft = 15;
-//         counter = setInterval(countdown, 1000);
-//       }
-//     }
-//   };
-
-//   clearInterval(counter);
-//   counter = setInterval(countdown, 1000);
-
-//   if (currentQuizNum === quizList.length && timeLeft === 0) {
-//     clearInterval(counter);
-//     disabledBtn();
-//     $("#timer").html(`Timer: 0 sec`);
-//     showResult();
-//   } else if (currentQuizNum > quizList.length) {
-//     clearInterval(counter);
-//     disabledBtn();
-//     $("#timer").html(`Timer: 0 sec`);
-//     showResult();
-//     $("#pauseBtn").attr("disabled", true);
-//   }
-// };
-
 //Set countdown timer and set the countdown time to 15 seconds
-
 const setTimer = () => {
   let countdown = () => {
-    $("#timer").html(`Timer: ${timeLeft} sec`);
-    timeLeft--;
+    displayTimer();
 
-    const stopTimer = () => {
+    stopTimer = () => {
       clearInterval(counter);
       disabledBtn();
-      $("#timer").html(`Timer: 0 sec`);
+    };
+
+    timerForLastQuestion = () => {
+      $("#timer").html(`Timer: 0 sec`); //to solve the time lag between browser and timer, fix the last time as 'o sec'
+      $("#pauseBtn").attr("disabled", true);
       showResult();
     };
 
-    if (currentQuizNum === quizList.length && timeLeft === 0) {
+    if (timeLeft <= 0) {
       stopTimer();
-    } else if (currentQuizNum > quizList.length) {
-      stopTimer();
-      $("#pauseBtn").attr("disabled", true);
-    }
-    if (timeLeft < 0) {
-      clearInterval(counter);
-      disabledBtn();
       if (showQuestion()) {
         timeLeft = 15;
-        counter = setInterval(countdown, 1000);
+        counter;
       }
+    }
+
+    //timer for the last question
+    if (currentQuizNum >= quizList.length && timeLeft === 0) {
+      stopTimer();
+      timerForLastQuestion();
     }
   };
 
   clearInterval(counter);
-  counter = setInterval(countdown, 1000);
+  counter = setInterval(countdown, 1000); // use 1000ms (1 second) instead of 1500ms
 };
 
 let gamePaused = () => {
   gamePaused = false;
-  let pausedTimeLeft = 0;
 
   $("#pauseBtn").on("click", function () {
     gamePaused = true;
     $(".flex-container").fadeTo("slow", 0.5);
     $("#modal-window").fadeIn("slow");
-    clearInterval(counter); //stop the timer interval
-    pausedTimeLeft = timeLeft;
-    console.log(pausedTimeLeft);
+    clearInterval(counter);
   });
 
   $("#continueBtn").on("click", function () {
-    console.log("resume bt clicked");
     gamePaused = false;
     $(".flex-container").fadeTo("slow", 1);
     $("#modal-window").fadeOut("slow");
-    pausedTimeLeft = timeLeft;
-    console.log(pausedTimeLeft);
-    setTimer(); // Start the timer interval again
+    setTimer(timeLeft);
+    console.log(`Resume  button clicked ${timeLeft}`);
   });
 };
 
@@ -210,7 +180,7 @@ const showQuestion = () => {
     let imageUrl = quizList[currentQuizNum - 1].thumbnailUrl;
     $("#quizImg").attr("src", imageUrl);
 
-    //Q: Is it not possible to automatically append after creating only one button?
+    //Question: Is it not possible to automatically append after creating only one button?
     for (let j = 0; j < 4; j++) {
       $("#answer" + j).html(quizList[currentQuizNum - 1].answers[j]);
     }
@@ -229,12 +199,8 @@ const nextQuestion = () => {
         timeLeft = 15;
       }
     } else {
-      clearInterval(counter);
-      $("#timer").html(`Timer: 0 sec`);
-      disabledBtn();
-      showResult();
-      //disable pause button as well
-      $("#pauseBtn").attr("disabled", true);
+      stopTimer();
+      timerForLastQuestion();
     }
   });
 };
@@ -244,18 +210,17 @@ const hideResult = () => {
   $(".show-result").hide();
 };
 
-// Result page load with final score and message
 const showResult = () => {
   $(".show-result").show();
 
   finalScore = totalScore;
-  $("#finalScore").html(`Total Score : ${finalScore}`).css("color", "yellow");
+  $("#finalScore").html(`Your Score : ${finalScore}`);
 
   //A final message is diffrent based on total score
   if (finalScore >= (getScore * quizList.length) / 2) {
     $("#finalMsg").html("Congratulation!<br> You're a Pokémon Master!");
   } else {
-    $("#finalMsg").html(`Wanna be a Pokémon Master? <br>Try Again!`);
+    $("#finalMsg").html(`Wanna be a Pokémon Master? <br> Try Again!`);
   }
 };
 
@@ -267,7 +232,7 @@ const resumeQuiz = () => {
 };
 
 //initial page for quiz.html
-//Should all functions be included in init()?
+//Question: Which is more effective/ faster  to use init() Or to put all functions in doc.ready?
 
 const init = function () {
   showQuestion();
@@ -275,13 +240,14 @@ const init = function () {
   checkCorrectAnswer();
   showScore();
   displayQuizNum();
+  displayTimer();
   setTimer();
   gamePaused();
   hideResult();
   resumeQuiz();
 };
 
-// Start doc.ready function
+//--------- Start doc.ready function
 $(() => {
   //Start button in the index page. When cliking start button, render the first quiz
   $(".start-btn").click(() => {
@@ -289,7 +255,7 @@ $(() => {
   });
 
   init();
-}); //End of document.ready
+}); //---------End of document.ready
 
 //footer
 $("#footerInfo").html(

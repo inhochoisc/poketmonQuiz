@@ -33,14 +33,13 @@
       <div class="box" id="score"></div>
       <div class="box" id="timer"></div>
       <div class="box">
-        <button id="pauseBtn" type="button" class="btn btn-outline-primary">||</button>
+        <button id="pauseBtn" type="button" class="btn btn-outline-light">||</button>
       </div>
-      <div id='modal-window'>
+      <div id='modal-window' style="display: none;">
         <div id="modal-contents">
           <p>Game paused</p>
           <button id="continueBtn" type="button" class="btn btn-outline-success">Play Again</button>
         </div>
-
       </div>
 
 
@@ -60,12 +59,14 @@
 
     <section class="wrapper show-result">
       <hr id="hr-result">
-      <h5 id="finalMsg"></h5>
-      <h3 id="finalScore"></h3>
-      <button type="button" class="btn btn-secondary" id="resumeBtn">Try Again</button>
+      <h6 id="finalMsg"></h6>
+      <h4 id="finalScore"></h4>
+      <button type="button" class="btn" id="resumeBtn" style="background-color: #2ec4b6;">Try Again</button>
     </section>
 
-    <footer id="footerInfo"></footer>
+    <section class="footer">
+      <footer id="footerInfo"></footer>
+    </section>
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>

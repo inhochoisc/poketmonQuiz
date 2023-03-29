@@ -1,15 +1,14 @@
-html,
 body {
   text-align: center;
-  font-family: "Press Start 2P", cursive;
   height: auto;
 }
 
 .wrapper {
-  height: auto;
-  min-height: 100%;
   background-color: black;
   color: white;
+  font-family: "Press Start 2P", cursive;
+  margin: 0 auto;
+  max-width: 1200px;
 }
 
 .subtitle {
@@ -108,25 +107,38 @@ body {
 .header-sub {
   display: flex;
   justify-content: center;
-  flex-flow: row wrap;
+  /* flex-flow: row wrap; */
   padding: 15px 0 7px 0;
 }
 
+.show-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  line-height: 300%;
+}
+
 .flex-container {
+  padding: 25px;
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-flow: row wrap;
   font-family: "Press Start 2P", cursive;
 }
 
 .box {
+  display: flex;
   flex-grow: 1;
-  align-items: start;
-  margin-right: 10px;
+  align-items: center;
+  margin-right: 7px;
 }
 
 .box1 {
-  /* flex-grow: 1; */
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
   align-content: center;
   align-items: center;
   margin: 20px 10px 0px 10px;
@@ -169,11 +181,11 @@ body {
 #nextBtn.btn {
   background-color: none;
   font-size: 20px;
-  color: orangered;
+  color: #e71d36;
 }
 
 #modal-window {
-  display: none;
+  /* display: none; */
   position: fixed;
   z-index: 1;
   padding-top: 100px;
@@ -183,16 +195,6 @@ body {
   height: 100%;
   overflow: auto;
   background-color: rgb(0, 0, 0);
-  background-color: #fff(0, 0, 0, 0.4);
-  transform: sclae(0);
-}
-
-/* Responsive modal */
-@media (max-width: 768px) {
-  .modal {
-    width: 80%;
-    max-width: 400px;
-  }
 }
 
 #modal-contents {
@@ -208,6 +210,14 @@ body {
   border: 2px solid white;
 }
 
+.show-result {
+  line-height: 1.7;
+}
+
+#finalScore {
+  color: #ff9f1c;
+}
+
 footer a {
   text-decoration: none;
   color: gainsboro;
@@ -215,10 +225,27 @@ footer a {
 }
 
 footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   font-family: "Exo 2", sans-serif;
-  font-size: 8px;
-  height: 20px;
-  position: relative;
-  margin-top: 20px;
-  /* transform: translateY(-100%); */
+  font-size: 10px;
+  padding: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  .wrapper {
+    width: 100%;
+  }
+  /* h1 {
+      font-size: 30px;
+  }
+  h2 {
+      font-size: 25px;
+  } */
+
+  .modal {
+    width: 80%;
+    max-width: 400px;
+  }
 }
