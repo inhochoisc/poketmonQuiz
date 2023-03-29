@@ -49,7 +49,6 @@ const displayQuizNum = () => {
 };
 
 // Check if user selected answer is correct. If users select the correct answer, they can get 10 points
-// Q: Do I need to use preventDefault()?
 
 const checkCorrectAnswer = () => {
   $("#answers").on("click", ".btn", function () {
@@ -109,12 +108,59 @@ const showScore = () => {
   $("#score").html(`Score: ${totalScore}`);
 };
 
+// Set countdown timer and set the countdown time to 15 seconds
+// const setTimer = () => {
+//   let countdown = () => {
+//     $("#timer").html(`Timer: ${timeLeft} sec`);
+//     timeLeft--;
+
+//     if (timeLeft < 0) {
+//       clearInterval(counter);
+//       disabledBtn();
+//       if (showQuestion()) {
+//         timeLeft = 15;
+//         counter = setInterval(countdown, 1000);
+//       }
+//     }
+//   };
+
+//   clearInterval(counter);
+//   counter = setInterval(countdown, 1000);
+
+//   if (currentQuizNum === quizList.length && timeLeft === 0) {
+//     clearInterval(counter);
+//     disabledBtn();
+//     $("#timer").html(`Timer: 0 sec`);
+//     showResult();
+//   } else if (currentQuizNum > quizList.length) {
+//     clearInterval(counter);
+//     disabledBtn();
+//     $("#timer").html(`Timer: 0 sec`);
+//     showResult();
+//     $("#pauseBtn").attr("disabled", true);
+//   }
+// };
+
 //Set countdown timer and set the countdown time to 15 seconds
+
 const setTimer = () => {
   let countdown = () => {
     $("#timer").html(`Timer: ${timeLeft} sec`);
     timeLeft--;
 
+    const stopTimer = () => {
+      clearInterval(counter);
+      disabledBtn();
+      $("#timer").html(`Timer: 0 sec`);
+      showResult();
+    };
+
+    if (currentQuizNum === quizList.length && timeLeft === 0) {
+      stopTimer();
+    } else if (currentQuizNum > quizList.length) {
+      stopTimer();
+      $("#pauseBtn").attr("disabled", true);
+    }
     if (timeLeft < 0) {
       clearInterval(counter);
       disabledBtn();
@@ -127,18 +173,6 @@ const setTimer = () => {
 
   clearInterval(counter);
   counter = setInterval(countdown, 1000);
-
-  if (currentQuizNum === quizList.length && timeLeft === 0) {
-    clearInterval(counter);
-    $("#timer").html(`Timer: 0 sec`);
-    disabledBtn();
-    showResult();
-  } else if (currentQuizNum > quizList.length) {
-    clearInterval(counter);
-    $("#timer").html(`Timer: 0 sec`);
-    disabledBtn();
-    showResult();
-  }
 };
 
 let gamePaused = () => {
@@ -200,6 +234,7 @@ const nextQuestion = () => {
       disabledBtn();
       showResult();
       //disable pause button as well
+      $("#pauseBtn").attr("disabled", true);
     }
   });
 };
