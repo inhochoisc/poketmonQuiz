@@ -1,50 +1,84 @@
-// List of questions in this Poketmon quiz
+// List of questions in the Poketmon quiz game
 const quizList = [
   {
     quizNumber: 1,
     characterID: 1,
-    thumbnailUrl: "assets/images/pikachu.png",
+    thumbnailUrl: "assets/images/pikachu.jpg",
     characterName: "Pikachu",
     answers: ["Purin", "Butterfree", "Pikachu", "Eevee"],
   },
   {
     quizNumber: 2,
     characterID: 2,
-    thumbnailUrl: "assets/images/bulbasaur.png",
+    thumbnailUrl: "assets/images/bulbasaur.jpg",
     characterName: "Bulbasaur",
     answers: ["Mewtwo", "Bulbasaur", "Psyduck", "Piplup"],
   },
   {
     quizNumber: 3,
     characterID: 3,
-    thumbnailUrl: "assets/images/chikorita.png",
+    thumbnailUrl: "assets/images/chikorita.jpg",
     characterName: "Chikorita",
     answers: ["Chikorita", "Bulbasaur", "Eevee", "Mewtwo"],
   },
   {
     quizNumber: 4,
     characterID: 4,
-    thumbnailUrl: "assets/images/dragonite.png",
+    thumbnailUrl: "assets/images/dragonite.jpg",
     characterName: "Dragonite",
     answers: ["Chikirita", "Bulbasaur", "Dragonite", "Eevee"],
   },
   {
     quizNumber: 5,
     characterID: 5,
-    thumbnailUrl: "assets/images/charmander.png",
+    thumbnailUrl: "assets/images/charmander.jpg",
     characterName: "Charmander",
     answers: ["Rowlet", "Charmander", "Dragonite", "Piplup"],
   },
+  {
+    quizNumber: 6,
+    characterID: 6,
+    thumbnailUrl: "assets/images/umbreon.jpg",
+    characterName: "Umbreon",
+    answers: ["Umbreon", "Charmander", "Mewtwo", "Piplup"],
+  },
+  {
+    quizNumber: 7,
+    characterID: 7,
+    thumbnailUrl: "assets/images/squirtle.jpg",
+    characterName: "Squirtle",
+    answers: ["Rowlet", "Charmander", "Squirtle", "Piplup"],
+  },
+  {
+    quizNumber: 8,
+    characterID: 8,
+    thumbnailUrl: "assets/images/psyduck.jpg",
+    characterName: "Psyduck",
+    answers: ["Rowlet", "Psyduck", "Dragonite", "Pikachu"],
+  },
+  {
+    quizNumber: 9,
+    characterID: 9,
+    thumbnailUrl: "assets/images/mew.jpg",
+    characterName: "Mew",
+    answers: ["Rowlet", "Mew", "Dragonite", "Eevee"],
+  },
+  {
+    quizNumber: 10,
+    characterID: 10,
+    thumbnailUrl: "assets/images/sylveon.jpg",
+    characterName: "Sylveon",
+    answers: ["Rowlet", "Umbreon", "Dragonite", "Sylveon"],
+  },
 ];
 
-//Q: let Vs const
+// Initialize varables
 let totalScore = 0;
-const getScore = 10; // easy to update later
+const getScore = 10; // make it easy to update later
 let timeLeft = 15;
 let counter;
 let currentQuizNum = 0;
 let finalScore = 0;
-
 let stopTimer;
 let timerForLastQuestion;
 
@@ -62,19 +96,17 @@ const displayTimer = () => {
   timeLeft--;
 };
 
-// Check if user selected answer is correct. If users select the correct answer, they can get 10 points
-
+// Check if user selected answer is correct.
+// If users select the correct answer, they can get 10 points(const getScore=10)
 const checkCorrectAnswer = () => {
   $("#answers").on("click", ".btn", function () {
     const userSelectionIndex = $(this).val();
-    // console.log(userSelectionIndex);
     const userSelection =
       quizList[currentQuizNum - 1].answers[userSelectionIndex];
-    // console.log(userSelection);
 
     const correctAnswer = quizList[currentQuizNum - 1].characterName;
-    console.log(correctAnswer);
-    //Compare caracterName and each property in answers[] one by one. Then get the index of the matching value
+
+    //Compare characterName and each property in answers[] one by one. Then get the index of the matching value
     const correctAnswerIndex = () => {
       for (let i = 0; i < 4; i++) {
         const answersName = quizList[currentQuizNum - 1].answers[i];
@@ -109,7 +141,7 @@ const disabledBtn = () => {
   }
 };
 
-//Reset answer buttons on the newly loaded page which are clickable and gray
+//Reset answer buttons on the newly loaded page
 const enabledBtn = () => {
   for (let i = 0; i < 4; i++) {
     const answerBtn = $(`#answer${i}`);
@@ -133,7 +165,7 @@ const setTimer = () => {
     };
 
     timerForLastQuestion = () => {
-      $("#timer").html(`Timer: 0`); //to solve the time lag between browser and timer, fix the last time as 'o sec'
+      $("#timer").html(`Timer: 0`); //to solve the time lag between browser and timer, fix the last time as 'o'
       $("#pauseBtn").attr("disabled", true);
       showResult();
     };
@@ -154,8 +186,10 @@ const setTimer = () => {
   };
 
   clearInterval(counter);
-  counter = setInterval(countdown, 1000); // use 1000ms (1 second) instead of 1500ms
+  counter = setInterval(countdown, 1000);
 };
+
+//Clicking the Pause button stops the timer and pops up a modal window.
 
 let gamePaused = () => {
   gamePaused = false;
@@ -167,6 +201,7 @@ let gamePaused = () => {
     clearInterval(counter);
   });
 
+  // Clicking the Continue button on the modal window, users return to the game screen that was stopped, and the timer will restart.
   $("#continueBtn").on("click", function () {
     gamePaused = false;
     $(".flex-container").fadeTo("slow", 1);
@@ -198,7 +233,7 @@ const showQuestion = () => {
   }
 };
 
-// Next question loads when clicking 'next' button
+// clicking Next button loads the next question
 const nextQuestion = () => {
   $("#nextBtn").click(function () {
     if (currentQuizNum < quizList.length) {
@@ -223,7 +258,7 @@ const showResult = () => {
   finalScore = totalScore;
   $("#finalScore").html(`Your Score : ${finalScore}`);
 
-  //A final message is diffrent based on total score
+  //A final message is different based on total score
   if (finalScore >= (getScore * quizList.length) / 2) {
     $("#finalMsg").html("Congratulation!<br> You're a Pokémon Master!");
   } else {
@@ -234,7 +269,7 @@ const showResult = () => {
 //Resume the quiz
 const resumeQuiz = () => {
   $("#resumeBtn").on("click", () => {
-    location.replace("quiz.html"); // Q: there might be a better way. load faster...)
+    location.replace("quiz.html");
   });
 };
 
@@ -256,7 +291,7 @@ const init = function () {
 
 //--------- Start doc.ready function
 $(() => {
-  //Start button in the index page. When cliking start button, render the first quiz
+  //Start button in the index page. When cliking a Start button, render the first quiz
   $(".start-btn").click(() => {
     location.replace("quiz.html");
   });
@@ -264,10 +299,11 @@ $(() => {
   init();
 }); //---------End of document.ready
 
-//header
+//Clicking logo in the sub page, it links to index.html
 $("#title-sub").on("click", () => {
   window.location.href = "index.html";
 });
+
 //footer
 $("#footerInfo").html(
   `<a href= https://junocollege.com/ target = "_blank">Created @ Juno College</a>`

@@ -13,6 +13,13 @@ body {
 }
 
 /* -- index.html */
+.flex-container-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .subtitle {
   font-size: 12px;
   letter-spacing: 2px;
@@ -117,7 +124,6 @@ body {
   justify-content: center;
   align-items: start;
   flex-flow: row wrap;
-  /* flex-flow: wrap; */
   font-family: "Press Start 2P", cursive;
   font-size: 15px;
   padding: 15px;
@@ -235,6 +241,10 @@ footer {
   }
 
   .flex-container {
+    font-size: 12px;
+  }
+
+  .flex-container-main {
     font-size: 12px;
   }
 
